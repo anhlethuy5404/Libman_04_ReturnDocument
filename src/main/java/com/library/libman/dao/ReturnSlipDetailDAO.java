@@ -102,4 +102,18 @@ public class ReturnSlipDetailDAO {
         }
         return returnSlipDetails;
     }
+    public void updateTotalFine(int borrowSlipDetailId, float totalFine) {
+        String sql = "UPDATE returnslipdetail SET totalFineDetail = ? WHERE borrowSlipDetailId = ?";
+        try {
+            DBUtils.connect();
+            Connection conn = DBUtils.jdbcConnection;
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setFloat(1, totalFine);
+                ps.setInt(2, borrowSlipDetailId);
+                ps.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
