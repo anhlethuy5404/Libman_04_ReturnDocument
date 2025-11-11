@@ -3,7 +3,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="com.library.libman.model.User, com.library.libman.model.Reader, com.library.libman.model.BorrowSlipDetail" %>
-<%@ page import="com.library.libman.dao.ReaderDAO, com.library.libman.dao.BorrowSlipDAO" %>
+<%@ page import="com.library.libman.dao.ReaderDAO, com.library.libman.dao.BorrowSlipDetailDAO" %>
 <%@ page import="java.util.ArrayList, java.util.List, java.util.Arrays" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -30,8 +30,8 @@
     if (readerCode != null && !readerCode.isEmpty() && selectedDetailsIds != null && selectedDetailsIds.length > 0) {
         reader = readerDAO.searchReaderByReaderCode(readerCode);
         if (reader != null) {
-            BorrowSlipDAO borrowSlipDAO = new BorrowSlipDAO();
-            List<BorrowSlipDetail> allBorrowed = borrowSlipDAO.getBorrowingList(reader.getId());
+            BorrowSlipDetailDAO borrowSlipDetailDAO = new BorrowSlipDetailDAO();
+            List<BorrowSlipDetail> allBorrowed = borrowSlipDetailDAO.getBorrowingList(reader.getId());
             List<String> selectedIdsList = Arrays.asList(selectedDetailsIds);
 
             for (BorrowSlipDetail detail : allBorrowed) {
@@ -167,7 +167,7 @@
 
                 <div class="button-group">
                     <button type="button" class="button back" onclick="history.back()">Back</button>
-
+                    
                     <button type="button" class="button confirm">Export Return Slip</button>
                 </div>
             </form>

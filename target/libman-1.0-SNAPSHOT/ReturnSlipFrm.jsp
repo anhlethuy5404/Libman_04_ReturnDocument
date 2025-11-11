@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.library.libman.model.User, com.library.libman.model.Reader, com.library.libman.model.ReturnSlip, com.library.libman.model.BorrowSlipDetail, com.library.libman.model.ReturnSlipDetail, com.library.libman.model.FineDetail" %>
-<%@ page import="com.library.libman.dao.ReaderDAO, com.library.libman.dao.BorrowSlipDAO" %>
+<%@ page import="com.library.libman.dao.ReaderDAO, com.library.libman.dao.ReturnSlipDetailDAO, com.library.libman.dao.FineDetailDAO" %>
 <%@ page import="java.util.List, java.util.Date" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -22,6 +22,18 @@
         response.sendRedirect("DocumentReturnFrm.jsp");
         return;
     }
+    
+    // Fetch ReturnSlipDetails directly in JSP as requested
+    ReturnSlipDetailDAO returnSlipDetailDAO = new ReturnSlipDetailDAO();
+    List<ReturnSlipDetail> returnSlipDetails = returnSlipDetailDAO.getReturnSlipDetailsByReturnSlipId(createdSlip.getId());
+
+    FineDetailDAO fineDetailDAO = new FineDetailDAO();
+    for (ReturnSlipDetail rsd : returnSlipDetails) {
+        rsd.setFineDetails(fineDetailDAO.getFineDetailsByReturnSlipDetailId(rsd.getId()));
+    }
+    
+    pageContext.setAttribute("returnSlipDetails", returnSlipDetails);
+
 
     // Also get librarian name from session
     User librarian = (User) session.getAttribute("user");
@@ -30,7 +42,7 @@
     // Set attributes for JSTL to use
     pageContext.setAttribute("reader", reader);
     pageContext.setAttribute("returnSlip", createdSlip);
-    pageContext.setAttribute("returnDate", new Date()); // Or get from the first slip
+    pageContext.setAttribute("returnDate", createdSlip.getReturnDate()); 
     pageContext.setAttribute("librarianName", librarianName);
 %>
 <html>
@@ -137,9 +149,6 @@
                 <p><span class="info-label">Librarian:</span>
                     <c:out value="${librarianName}" />
                 </p>
-                <p><span class="info-label">Reader Code:</span>
-                    <c:out value="${reader.readerCode}" />
-                </p>
                 <p><span class="info-label">Reader Name:</span>
                     <c:out value="${reader.name}" />
                 </p>
@@ -159,7 +168,7 @@
                     <c:set var="index" value="1" />
                     <c:set var="totalFine" value="0" />
 
-                    <c:forEach var="returnSlipDetail" items="${returnSlip.returnSlipDetails}">
+                    <c:forEach var="returnSlipDetail" items="${returnSlipDetails}">
 
                         <tr>
                             <td>
@@ -174,11 +183,9 @@
 
                             <td>
                                 <c:if test="${not empty returnSlipDetail.fineDetails}">
-                                    <c:forEach var="fineDetail" items="${returnSlipDetail.fineDetails}">
-
-                                        <c:out value="${fineDetail.fine.type}" />
+                                    <c:forEach var="fineDetail" items="${returnSlipDetail.fineDetails}" varStatus="loop">
+                                        <c:out value="${fineDetail.fine.type}" /><c:if test="${not loop.last}">, </c:if>
                                     </c:forEach>
-
                                 </c:if>
                             </td>
                             <td>
@@ -204,7 +211,7 @@
             <div class="button-group">
                 <button type="button" class="button print" onclick="printAndMarkAsPrinted(${returnSlip.id})">Print
                     Slip</button>
-                <button type="button" class="button back" onclick="window.location.href='DocumentReturnFrm.jsp'">Done /
+                <button type="button" class="button back" onclick="goBackAndUpdateStatus(${returnSlip.id})">Done /
                     Go Back</button>
             </div>
     </div>
@@ -212,25 +219,55 @@
         function printAndMarkAsPrinted(returnSlipId) {
             window.print();
 
-            fetch('/libman/update-return-slip-status', {
+            const contextPath = '<%= request.getContextPath() %>';
+            fetch(`${contextPath}/update-return-slip-status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'returnSlipId=' + returnSlipId + '&status=Printed'
+                body: 'returnSlipId=' + returnSlipId + '&status=Success'
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    console.log('Status update successful:', data);
-                })
-                .catch(error => {
-                    console.error('Error updating status:', error);
-                });
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error('Network response was not ok. Status: ' + response.status + ', Body: ' + text);
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('Status update successful:', data);
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+            });
+        }
+
+        function goBackAndUpdateStatus(returnSlipId) {
+            const contextPath = '<%= request.getContextPath() %>';
+            fetch(`${contextPath}/update-return-slip-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'returnSlipId=' + returnSlipId + '&status=Success'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error('Network response was not ok. Status: ' + response.status + ', Body: ' + text);
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('Status update successful:', data);
+                window.location.href = 'MainFrm.jsp';
+            })
+            .catch(error => {
+                console.error('Error updating status:', error);
+                window.location.href = 'MainFrm.jsp';
+            });
         }
     </script>
 </body>

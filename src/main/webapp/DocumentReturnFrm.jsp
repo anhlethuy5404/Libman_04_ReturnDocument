@@ -113,7 +113,7 @@
         }
 
         input[type="submit"],
-        button.button {
+        button {
             background-color: #1976d2;
             color: white;
             border: none;
@@ -123,21 +123,28 @@
         }
 
         input[type="submit"]:hover,
-        button.button:hover {
+        button:hover {
             background-color: #0d47a1;
             box-shadow: 0 4px 12px rgba(13, 71, 161, 0.2);
         }
 
         button.button.back {
-            background-color: #64b5f6;
-            margin: 32px;
+            background-color: #757575;
+            color: white;
+            border-radius: 4px; 
+            margin-right: 20px;
         }
 
         button.button.back:hover {
-            background-color: #42a5f5;
+            background-color: #616161;
+            box-shadow: 0 4px 8px rgba(97, 97, 97, 0.2);
         }
 
-        /* Info Section */
+        .button-group {
+            text-align: center; 
+            padding: 20px 32px 0 32px; 
+        }
+
         .info-section {
             background: white;
             padding: 24px 32px;
@@ -279,10 +286,11 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
-                                
-                                <button type="button" class="button back" onclick="history.back()">Back</button>
-                                <input type="hidden" name="readerCode" value="${foundReader.readerCode}">
-                                <input type="submit" value="Next">
+                                <div class="button-group">
+                                    <button type="button" class="button back" onclick="history.back()">Back</button>
+                                    <input type="hidden" name="readerCode" value="${foundReader.readerCode}">
+                                    <input type="submit" value="Next">
+                                </div>
                             </form>
                         </c:if>
                         <c:if test="${empty borrowingList}">

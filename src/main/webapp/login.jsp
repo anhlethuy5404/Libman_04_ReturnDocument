@@ -4,73 +4,122 @@
     <head>
         <title>Đăng Nhập</title>
         <style>
-            body {
-              font-family: Arial, sans-serif;
-              background-color: #fff;
-              color: #000;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              margin: 0;
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
-            form {
-              background: #f9f9f9;
-              border: 1px solid #ccc;
-              padding: 30px;
-              border-radius: 10px;
-              box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-              width: 300px;
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f0f7ff;
+                color: #1a3a52;
+                line-height: 1.6;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 36px;
+                color: #0d47a1;
+                margin-bottom: 8px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
             }
 
             h2 {
-              text-align: center;
-              color: #3498db;
-              margin-bottom: 20px;
+                font-size: 24px;
+                color: #1976d2;
+                margin-bottom: 24px;
+                font-weight: 600;
+            }
+
+            form {
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(13, 71, 161, 0.1);
+                border: 1px solid #e1f5fe;
+                width: 350px;
+            }
+
+            form table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            form table tr td:first-child {
+                font-weight: 600;
+                color: #1565c0;
+                padding-right: 15px;
+                padding-bottom: 15px;
+                font-size: 14px;
+            }
+            
+            form table tr td {
+                padding-bottom: 15px;
             }
 
             input[type="text"],
             input[type="password"] {
-              width: 100%;
-              padding: 10px;
-              margin: 8px 0;
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              outline: none;
+                padding: 10px 12px;
+                margin: 0;
+                border: 2px solid #90caf9;
+                border-radius: 4px;
+                font-size: 14px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                transition: all 0.3s ease;
+                outline: none;
+                background-color: #f8f8f8;
+                color: #1a3a52;
             }
 
             input[type="text"]:focus,
             input[type="password"]:focus {
-              border-color: #3498db;
+                border-color: #1565c0;
+                box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
             }
 
             input[type="submit"] {
-              width: 100%;
-              background-color: #3498db;
-              color: white;
-              border: none;
-              padding: 10px;
-              border-radius: 5px;
-              cursor: pointer;
-              font-size: 15px;
+                width: 100%;
+                background-color: #1976d2;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 15px;
+                font-weight: 600;
+                margin-top: 10px;
+                transition: background-color 0.3s ease;
             }
 
             input[type="submit"]:hover {
-              background-color: #217dbb;
+                background-color: #0d47a1;
+                box-shadow: 0 4px 12px rgba(13, 71, 161, 0.2);
+            }
+
+            p {
+                color: #f44336;
+                margin-bottom: 15px;
+                text-align: center;
             }
 
             a {
-              color: #3498db;
-              text-decoration: none;
-              display: block;
-              text-align: center;
-              margin-top: 10px;
+                color: #1565c0;
+                text-decoration: none;
+                display: block;
+                text-align: center;
+                margin-top: 15px;
+                font-size: 14px;
             }
 
             a:hover {
-              text-decoration: underline;
+                text-decoration: underline;
             }
         </style>
     </head>

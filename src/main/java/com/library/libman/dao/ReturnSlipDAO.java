@@ -57,8 +57,7 @@ public class ReturnSlipDAO {
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setFloat(1, totalFine);
                 ps.setInt(2, borrowSlipDetailId);
-                int rowsAffected = ps.executeUpdate();
-                System.out.println("updateTotalFine: Rows affected for borrowSlipDetailId " + borrowSlipDetailId + ": " + rowsAffected);
+                ps.executeUpdate();
             }
         } catch (Exception e) {
             e.printStackTrace();
