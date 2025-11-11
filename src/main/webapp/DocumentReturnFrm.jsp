@@ -265,8 +265,8 @@
                                 <table>
                                     <thead>
                                         <th>No</th>
+                                        <th>Document ID</th>
                                         <th>Document Title</th>
-                                        <th>Author</th>
                                         <th>Borrow Date</th>
                                         <th>Due Date</th>
                                         <th>Select</th>
@@ -275,8 +275,8 @@
                                         <c:forEach var="detail" items="${borrowingList}" varStatus="loop">
                                             <tr>
                                                 <td>${loop.index + 1}</td>
+                                                <td>${detail.document.id}</td>
                                                 <td>${detail.document.title}</td>
-                                                <td>${detail.document.author}</td>
                                                 <td>${detail.borrowSlip.borrowDate}</td>
                                                 <td>${detail.borrowSlip.dueDate}</td>
                                                 <td>
