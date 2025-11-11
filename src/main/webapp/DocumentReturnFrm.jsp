@@ -242,6 +242,7 @@
                     <input type="text" id="readerCode" name="readerCode" value="${param.readerCode}"
                         required>
                     <input type="submit" value="Search">
+                    <button type="button" style="border-radius: 4px;">Scan Card</button>
                 </form>
 
                 <%-- Display borrowed list --%>
